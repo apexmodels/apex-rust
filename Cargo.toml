@@ -23,16 +23,16 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 thiserror = "2.0"
 anyhow = "1.0"
 regex = "1.11"
-reqwest = { version = "0.12", features = ["json", "stream"] }
+reqwest = { version = "0.13", features = ["json", "stream"] }
 a2a-lf = "0.4"
 a2a-server-lf = "0.5"
 clap = { version = "4.5", features = ["derive"] }
-crossterm = "0.28"
+crossterm = "0.29"
 memchr = "2.7"
-scraper = "0.20"
+scraper = "0.29"
 rust-embed = "8.5"
 axum = { version = "0.8", features = ["macros"] }
-tower-http = { version = "0.6", features = ["cors", "fs"] }
+tower-http = { version = "0.7", features = ["cors", "fs"] }
 async-trait = "0.1"
 futures = "0.3"
 async-stream = "0.3"
