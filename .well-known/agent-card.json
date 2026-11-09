@@ -1,0 +1,34 @@
+{
+  "name": "ApexPhi-Think-14B",
+  "description": "Frontier Mathematical Reasoning, Autonomous Web Research & Voice Synthesis Engine on Microsoft Phi-4 (14.7B)",
+  "version": "1.0.0",
+  "protocol": "a2a-v1",
+  "supportedTaskModes": ["immediate", "streaming", "wait", "get"],
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": false,
+    "extendedAgentCard": false
+  },
+  "skills": [
+    {
+      "id": "mathematical_proof",
+      "name": "Mathematical Reasoning & Invariant Proving",
+      "description": "Performs deep step-by-step invariant derivations inside <think> blocks before outputting conclusions.",
+      "tags": ["reasoning", "math", "invariants", "phi4"]
+    },
+    {
+      "id": "web_grounded_research",
+      "name": "Autonomous Web Grounding & Documentation Scraping",
+      "description": "Autonomously queries DuckDuckGo, scrapes official documentation, and synthesizes grounded citations.",
+      "tags": ["web", "retrieval", "citations"]
+    },
+    {
+      "id": "voice_audio_synthesis",
+      "name": "Voice Audio Enunciation & Synthesis",
+      "description": "Synthesizes spoken natural audio summaries free of raw Markdown or unpronounceable code syntax.",
+      "tags": ["voice", "tts", "audio"]
+    }
+  ],
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["text/plain", "text/event-stream", "application/json"]
+}
