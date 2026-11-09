@@ -181,13 +181,19 @@ async fn voice_speak_handler(
     let voice_arg = payload.voice.unwrap_or_else(|| "Samantha".to_string());
     let speech_text = cleaned.clone();
 
-    tokio::task::spawn_blocking(move || {
-        let _ = std::process::Command::new("say")
-            .arg("-v")
-            .arg(&voice_arg)
-            .arg(&speech_text)
-            .output();
-    });
+    // Only invoke physical audio output when not in test or headless mode
+    let audio_disabled = std::env::var("APEX_DISABLE_AUDIO").is_ok()
+        || std::env::var("CI").is_ok();
+
+    if !audio_disabled {
+        tokio::task::spawn_blocking(move || {
+            let _ = std::process::Command::new("say")
+                .arg("-v")
+                .arg(&voice_arg)
+                .arg(&speech_text)
+                .output();
+        });
+    }
 
     Ok(Json(VoiceSpeakResponse {
         status: "speaking".to_string(),

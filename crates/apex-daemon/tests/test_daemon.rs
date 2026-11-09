@@ -9,6 +9,7 @@ use std::sync::Arc;
 use tower::ServiceExt;
 
 fn build_test_state() -> AppState {
+    std::env::set_var("APEX_DISABLE_AUDIO", "1");
     AppState {
         ollama: Arc::new(OllamaClient::default()),
         grounding: Arc::new(GroundingEngine::default()),
