@@ -23,7 +23,7 @@ jobs:
             artifact_name: apex-rust-linux-x86_64.tar.gz
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Install Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
