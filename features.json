@@ -5,30 +5,30 @@
     "behavior": "ThinkParser parses streaming token chunks, separating <think> thoughts from final answers, and SpeechClean strips thoughts/code for audio synthesis",
     "verification": "cargo test -p apex-core --test test_core",
     "state": "passing",
-    "evidence": "Certified at epoch 1794215304 via 'cargo test -p apex-core --test test_core' (exit code: 0)"
+    "evidence": "Certified at epoch 1794216490 via 'cargo test -p apex-core --test test_core' (exit code: 0)"
   },
   {
     "id": "F02",
     "module": "apex-web",
     "behavior": "Scraper extracts clean documentation paragraphs from public URLs and DuckDuckGo queries return structured hits in < 50ms",
     "verification": "cargo test -p apex-web --test test_web",
-    "state": "not_started",
-    "evidence": null
+    "state": "passing",
+    "evidence": "Certified at epoch 1794216490 via 'cargo test -p apex-web --test test_web' (exit code: 0)"
   },
   {
     "id": "F03",
     "module": "apex-daemon",
     "behavior": "Axum daemon merges official a2a-server-lf routers, serves /.well-known/agent-card.json, and streams SSE chat events with real-time think tokens",
     "verification": "cargo test -p apex-daemon --test test_daemon",
-    "state": "not_started",
-    "evidence": null
+    "state": "passing",
+    "evidence": "Certified at epoch 1794216495 via 'cargo test -p apex-daemon --test test_daemon' (exit code: 0)"
   },
   {
     "id": "F04",
     "module": "apex-harness",
     "behavior": "Pass-state gating prevents premature completion declarations unless Layer 1, 2, and 3 verification commands pass",
     "verification": "cargo test -p apex-harness --test test_harness",
-    "state": "not_started",
-    "evidence": null
+    "state": "passing",
+    "evidence": "Certified at epoch 1794216495 via 'cargo test -p apex-harness --test test_harness' (exit code: 0)"
   }
 ]

@@ -11,6 +11,8 @@ impl StateMachineGatekeeper {
             (FeatureState::Blocked, FeatureState::Active) => true,
             // Transition to Passing is ONLY permitted through verification gate
             (FeatureState::Active, FeatureState::Passing) => true,
+            // Re-certification / verification renewal of already passing feature
+            (FeatureState::Passing, FeatureState::Passing) => true,
             // Regression detected by harness
             (FeatureState::Passing, FeatureState::Active) => true,
             (FeatureState::Passing, FeatureState::Blocked) => true,
