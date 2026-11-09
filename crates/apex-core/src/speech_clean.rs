@@ -1,29 +1,21 @@
 use regex::Regex;
 use std::sync::LazyLock;
 
-static RE_CODE_BLOCK: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?s)```.*?```").expect("valid regex")
-});
+static RE_CODE_BLOCK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?s)```.*?```").expect("valid regex"));
 
-static RE_INLINE_CODE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"`([^`]+)`").expect("valid regex")
-});
+static RE_INLINE_CODE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"`([^`]+)`").expect("valid regex"));
 
-static RE_MARKDOWN_LINK: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\[([^\]]+)\]\([^\)]+\)").expect("valid regex")
-});
+static RE_MARKDOWN_LINK: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\[([^\]]+)\]\([^\)]+\)").expect("valid regex"));
 
-static RE_HEADERS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?m)^#+\s*").expect("valid regex")
-});
+static RE_HEADERS: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^#+\s*").expect("valid regex"));
 
-static RE_SYMBOLS: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"[\*_~]").expect("valid regex")
-});
+static RE_SYMBOLS: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"[\*_~]").expect("valid regex"));
 
-static RE_WHITESPACE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\s+").expect("valid regex")
-});
+static RE_WHITESPACE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\s+").expect("valid regex"));
 
 /// Cleans raw LLM response text for natural-sounding Text-to-Speech (TTS).
 pub fn clean_text_for_speech(raw_text: &str) -> String {

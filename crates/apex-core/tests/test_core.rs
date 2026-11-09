@@ -4,8 +4,10 @@ use apex_core::{clean_text_for_speech, ThinkEvent, ThinkParser};
 fn test_think_parser_normal_transition() {
     let mut parser = ThinkParser::new();
     let events = parser.feed("Reasoning about parity...\n</think>\n\nEven number.");
-    
-    assert!(events.contains(&ThinkEvent::ThinkChunk("Reasoning about parity...\n".to_string())));
+
+    assert!(events.contains(&ThinkEvent::ThinkChunk(
+        "Reasoning about parity...\n".to_string()
+    )));
     assert!(events.contains(&ThinkEvent::ThinkEnd));
     assert!(events.contains(&ThinkEvent::AnswerChunk("Even number.".to_string())));
     assert!(!parser.is_in_think());
@@ -14,10 +16,12 @@ fn test_think_parser_normal_transition() {
 #[test]
 fn test_think_parser_split_boundary_chunk() {
     let mut parser = ThinkParser::new();
-    
+
     // Chunk 1 ends with partial closing tag "</th"
     let events1 = parser.feed("Deriving invariant: x > 0 </th");
-    assert!(events1.contains(&ThinkEvent::ThinkChunk("Deriving invariant: x > 0 ".to_string())));
+    assert!(events1.contains(&ThinkEvent::ThinkChunk(
+        "Deriving invariant: x > 0 ".to_string()
+    )));
     assert!(parser.is_in_think());
 
     // Chunk 2 completes the tag with "ink>\n\nVerified."

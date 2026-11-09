@@ -1,7 +1,6 @@
 use a2a_server::{
-    agent_card::agent_card_router,
-    jsonrpc::jsonrpc_router,
-    DefaultRequestHandler, InMemoryTaskStore, StaticAgentCard,
+    agent_card::agent_card_router, jsonrpc::jsonrpc_router, DefaultRequestHandler,
+    InMemoryTaskStore, StaticAgentCard,
 };
 use apex_core::models::{ChatMessage, ChatStreamRequest};
 use apex_core::speech_clean::clean_text_for_speech;
@@ -230,12 +229,24 @@ async fn static_handler(uri: Uri) -> Response {
     match Assets::get(path) {
         Some(content) => {
             let mime = mime_guess::from_path(path).first_or_octet_stream();
-            ([(header::CONTENT_TYPE, HeaderValue::from_str(mime.as_ref()).unwrap())], Body::from(content.data)).into_response()
+            (
+                [(
+                    header::CONTENT_TYPE,
+                    HeaderValue::from_str(mime.as_ref()).unwrap(),
+                )],
+                Body::from(content.data),
+            )
+                .into_response()
         }
         None => match Assets::get("index.html") {
-            Some(content) => {
-                ([(header::CONTENT_TYPE, HeaderValue::from_static("text/html; charset=utf-8"))], Body::from(content.data)).into_response()
-            }
+            Some(content) => (
+                [(
+                    header::CONTENT_TYPE,
+                    HeaderValue::from_static("text/html; charset=utf-8"),
+                )],
+                Body::from(content.data),
+            )
+                .into_response(),
             None => (StatusCode::NOT_FOUND, "Not Found").into_response(),
         },
     }

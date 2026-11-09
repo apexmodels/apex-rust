@@ -7,7 +7,7 @@ impl PageScraper {
     /// filtering out navigation, footer, scripts, styles, and empty elements.
     pub fn extract_readable_text(html_content: &str, max_chars: usize) -> String {
         let document = Html::parse_document(html_content);
-        
+
         // Target informative content blocks
         let content_selectors = ["article", "main", "#content", ".content", "body"];
         let mut target_elem = None;
@@ -22,7 +22,10 @@ impl PageScraper {
         }
 
         let p_sel = Selector::parse("p, h1, h2, h3, h4, li, pre code").unwrap();
-        let ignore_sel = Selector::parse("script, style, noscript, nav, footer, header, aside, .nav, .footer, .menu").unwrap();
+        let ignore_sel = Selector::parse(
+            "script, style, noscript, nav, footer, header, aside, .nav, .footer, .menu",
+        )
+        .unwrap();
 
         let mut extracted_parts = Vec::new();
         let mut total_len = 0;
@@ -63,7 +66,11 @@ impl PageScraper {
     }
 
     /// Fetches a URL with a timeout and extracts its readable text.
-    pub async fn fetch_and_extract(client: &reqwest::Client, url: &str, max_chars: usize) -> Result<String, crate::error::WebError> {
+    pub async fn fetch_and_extract(
+        client: &reqwest::Client,
+        url: &str,
+        max_chars: usize,
+    ) -> Result<String, crate::error::WebError> {
         let resp = client.get(url).send().await?;
         let body = resp.text().await?;
         Ok(Self::extract_readable_text(&body, max_chars))

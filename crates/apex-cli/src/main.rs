@@ -2,8 +2,8 @@ use apex_core::models::ThinkingDepth;
 use apex_core::speech_clean::clean_text_for_speech;
 use apex_core::think_parser::{ThinkEvent, ThinkParser};
 use clap::Parser;
-use crossterm::style::{Color, ResetColor, SetForegroundColor};
 use crossterm::execute;
+use crossterm::style::{Color, ResetColor, SetForegroundColor};
 use futures::StreamExt;
 use std::io::{stdout, Write};
 
@@ -36,12 +36,23 @@ async fn main() -> anyhow::Result<()> {
     let args = Cli::parse();
 
     println!("▲ Apex-Phi-Think-14B (Rust Edition)");
-    println!("  Server: {} | Web: {} | Voice: {} | Depth: {}\n", args.server, args.web, args.voice, args.depth);
+    println!(
+        "  Server: {} | Web: {} | Voice: {} | Depth: {}\n",
+        args.server, args.web, args.voice, args.depth
+    );
 
     let client = reqwest::Client::new();
 
     if let Some(prompt) = args.prompt {
-        run_query(&client, &args.server, &prompt, args.web, args.voice, &args.depth).await?;
+        run_query(
+            &client,
+            &args.server,
+            &prompt,
+            args.web,
+            args.voice,
+            &args.depth,
+        )
+        .await?;
     } else {
         println!("Type your query (or 'exit' to quit):\n");
         let mut rl = std::io::stdin().lines();
@@ -54,7 +65,15 @@ async fn main() -> anyhow::Result<()> {
                     break;
                 }
                 if !trimmed.is_empty() {
-                    run_query(&client, &args.server, trimmed, args.web, args.voice, &args.depth).await?;
+                    run_query(
+                        &client,
+                        &args.server,
+                        trimmed,
+                        args.web,
+                        args.voice,
+                        &args.depth,
+                    )
+                    .await?;
                     println!("\n");
                 }
             } else {
@@ -108,14 +127,18 @@ async fn run_query(
 
                         for line in block.lines() {
                             if let Some(stripped) = line.strip_prefix("data: ") {
-                                if let Ok(val) = serde_json::from_str::<serde_json::Value>(stripped) {
+                                if let Ok(val) = serde_json::from_str::<serde_json::Value>(stripped)
+                                {
                                     if let Some(token) = val.get("token").and_then(|v| v.as_str()) {
                                         let events = parser.feed(token);
                                         for ev in events {
                                             match ev {
                                                 ThinkEvent::ThinkChunk(chunk) => {
                                                     if !in_think_display {
-                                                        execute!(stdout(), SetForegroundColor(Color::DarkGrey))?;
+                                                        execute!(
+                                                            stdout(),
+                                                            SetForegroundColor(Color::DarkGrey)
+                                                        )?;
                                                         print!("🧠 [Thinking]: ");
                                                         in_think_display = true;
                                                     }
@@ -150,9 +173,7 @@ async fn run_query(
             if voice && !full_answer.is_empty() {
                 let cleaned = clean_text_for_speech(&full_answer);
                 if !cleaned.is_empty() {
-                    let _ = std::process::Command::new("say")
-                        .arg(&cleaned)
-                        .output();
+                    let _ = std::process::Command::new("say").arg(&cleaned).output();
                 }
             }
         }

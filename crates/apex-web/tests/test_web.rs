@@ -54,7 +54,9 @@ fn test_scraper_readable_text() {
 
     let extracted = PageScraper::extract_readable_text(raw_html, 2000);
     assert!(extracted.contains("Understanding Harness Engineering"));
-    assert!(extracted.contains("Harness engineering treats AI agent workflows with strict software testing primitives"));
+    assert!(extracted.contains(
+        "Harness engineering treats AI agent workflows with strict software testing primitives"
+    ));
     assert!(extracted.contains("By enforcing three-layer verification gates"));
 
     // Ensure nav, script, footer are stripped out
@@ -70,7 +72,10 @@ async fn test_grounding_engine_instantiation() {
     let result = engine.research("rust tokio", 1).await;
     match result {
         Ok(grounded) => {
-            println!("Grounding completed with {} sources", grounded.sources.len());
+            println!(
+                "Grounding completed with {} sources",
+                grounded.sources.len()
+            );
         }
         Err(e) => {
             // Network failures in sandboxed/offline environments shouldn't fail test,

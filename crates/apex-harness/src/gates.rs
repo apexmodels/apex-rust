@@ -1,6 +1,6 @@
-use std::process::Command;
 use crate::feature::{Feature, FeatureError, FeatureState};
 use crate::state_machine::StateMachineGatekeeper;
+use std::process::Command;
 
 pub struct ThreeLayerGate;
 
@@ -17,10 +17,7 @@ impl ThreeLayerGate {
     /// Executes the feature's verification command in shell.
     pub fn execute_verification(feature: &Feature) -> VerificationOutcome {
         let cmd = &feature.verification;
-        let output = Command::new("sh")
-            .arg("-c")
-            .arg(cmd)
-            .output();
+        let output = Command::new("sh").arg("-c").arg(cmd).output();
 
         match output {
             Ok(out) => VerificationOutcome {

@@ -1,6 +1,6 @@
-use std::path::PathBuf;
-use clap::Parser;
 use apex_harness::{FeatureRegistry, FeatureState, ThreeLayerGate};
+use clap::Parser;
+use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
 #[command(author, version, about = "Apex Harness Verification Gatekeeper")]
@@ -32,27 +32,42 @@ fn main() -> anyhow::Result<()> {
             .get_feature_mut(&target_id)
             .ok_or_else(|| anyhow::anyhow!("Feature {target_id} not found in registry"))?;
 
-        println!("\n🔍 Auditing Feature [{}]: {}", feature.id, feature.behavior);
+        println!(
+            "\n🔍 Auditing Feature [{}]: {}",
+            feature.id, feature.behavior
+        );
         println!("   Command: {}", feature.verification);
 
         let outcome = ThreeLayerGate::certify_feature(feature)?;
         if outcome.success {
-            println!("   ✅ PASS: Feature transitioned to {:?}", FeatureState::Passing);
+            println!(
+                "   ✅ PASS: Feature transitioned to {:?}",
+                FeatureState::Passing
+            );
             println!("   Evidence: {}", feature.evidence.as_deref().unwrap_or(""));
             verified_count += 1;
         } else {
-            println!("   ❌ FAIL: Verification command failed with exit code {:?}", outcome.exit_code);
+            println!(
+                "   ❌ FAIL: Verification command failed with exit code {:?}",
+                outcome.exit_code
+            );
             eprintln!("   Stderr: {}", outcome.stderr);
             failed_count += 1;
         }
     } else if args.all {
         for feature in &mut registry.features {
-            println!("\n🔍 Auditing Feature [{}]: {}", feature.id, feature.behavior);
+            println!(
+                "\n🔍 Auditing Feature [{}]: {}",
+                feature.id, feature.behavior
+            );
             println!("   Command: {}", feature.verification);
 
             let outcome = ThreeLayerGate::certify_feature(feature)?;
             if outcome.success {
-                println!("   ✅ PASS: Feature transitioned to {:?}", FeatureState::Passing);
+                println!(
+                    "   ✅ PASS: Feature transitioned to {:?}",
+                    FeatureState::Passing
+                );
                 verified_count += 1;
             } else {
                 println!("   ❌ FAIL: Exit code {:?}", outcome.exit_code);
@@ -67,7 +82,10 @@ fn main() -> anyhow::Result<()> {
     registry.save_to_file(&args.path)?;
     println!("\n─────────────────────────────────────────────────────────────");
     println!("📊 Summary: {verified_count} Certified Passing | {failed_count} Blocked/Failed");
-    println!("   Back-pressure remaining: {} features", registry.back_pressure_count());
+    println!(
+        "   Back-pressure remaining: {} features",
+        registry.back_pressure_count()
+    );
 
     if failed_count > 0 {
         std::process::exit(1);

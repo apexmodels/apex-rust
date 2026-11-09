@@ -1,5 +1,5 @@
-use std::path::Path;
 use serde::{Deserialize, Serialize};
+use std::path::Path;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -9,7 +9,10 @@ pub enum FeatureError {
     #[error("Serialization error: {0}")]
     Json(#[from] serde_json::Error),
     #[error("Invalid feature transition: from {from:?} to {to:?}")]
-    InvalidTransition { from: FeatureState, to: FeatureState },
+    InvalidTransition {
+        from: FeatureState,
+        to: FeatureState,
+    },
     #[error("Feature not found: {0}")]
     NotFound(String),
 }
@@ -62,6 +65,9 @@ impl FeatureRegistry {
 
     /// Back-pressure: returns the count of features that are not yet passing.
     pub fn back_pressure_count(&self) -> usize {
-        self.features.iter().filter(|f| f.state != FeatureState::Passing).count()
+        self.features
+            .iter()
+            .filter(|f| f.state != FeatureState::Passing)
+            .count()
     }
 }

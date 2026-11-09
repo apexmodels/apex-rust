@@ -37,7 +37,11 @@ impl GroundingEngine {
     }
 
     /// Performs search and concurrent page scraping, assembling formatted grounding context.
-    pub async fn research(&self, query: &str, max_sources: usize) -> Result<GroundedResearchResult, WebError> {
+    pub async fn research(
+        &self,
+        query: &str,
+        max_sources: usize,
+    ) -> Result<GroundedResearchResult, WebError> {
         let hits = self.search_client.search(query, max_sources).await?;
         if hits.is_empty() {
             return Ok(GroundedResearchResult {
@@ -70,7 +74,8 @@ impl GroundingEngine {
         }
         gathered.sort_by_key(|(id, _, _)| *id);
 
-        let mut context_builder = String::from("Here is live web search context to assist your response:\n\n");
+        let mut context_builder =
+            String::from("Here is live web search context to assist your response:\n\n");
 
         for (id, hit, text) in gathered {
             sources.push(WebSource {

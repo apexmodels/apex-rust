@@ -30,7 +30,11 @@ impl DuckDuckGoClient {
     }
 
     /// Search DuckDuckGo HTML endpoint and extract top hits.
-    pub async fn search(&self, query: &str, max_results: usize) -> Result<Vec<SearchHit>, WebError> {
+    pub async fn search(
+        &self,
+        query: &str,
+        max_results: usize,
+    ) -> Result<Vec<SearchHit>, WebError> {
         let url = format!("https://html.duckduckgo.com/html/?q={}", urlencoding(query));
         let response = self.client.get(&url).send().await?;
         let html_body = response.text().await?;
@@ -73,7 +77,9 @@ impl DuckDuckGoClient {
                     String::new()
                 };
 
-                if !title.is_empty() && (href.starts_with("http://") || href.starts_with("https://")) {
+                if !title.is_empty()
+                    && (href.starts_with("http://") || href.starts_with("https://"))
+                {
                     hits.push(SearchHit {
                         title,
                         href,
@@ -108,7 +114,9 @@ fn urldecoding(input: &str) -> String {
     let mut i = 0;
     while i < bytes.len() {
         if bytes[i] == b'%' && i + 2 < bytes.len() {
-            if let Ok(val) = u8::from_str_radix(std::str::from_utf8(&bytes[i + 1..i + 3]).unwrap_or(""), 16) {
+            if let Ok(val) =
+                u8::from_str_radix(std::str::from_utf8(&bytes[i + 1..i + 3]).unwrap_or(""), 16)
+            {
                 result.push(val);
                 i += 3;
                 continue;

@@ -2,11 +2,26 @@ use apex_harness::{Feature, FeatureState, StateMachineGatekeeper, ThreeLayerGate
 
 #[test]
 fn test_state_machine_valid_transitions() {
-    assert!(StateMachineGatekeeper::can_transition(FeatureState::NotStarted, FeatureState::Active));
-    assert!(StateMachineGatekeeper::can_transition(FeatureState::Active, FeatureState::Passing));
-    assert!(StateMachineGatekeeper::can_transition(FeatureState::Active, FeatureState::Blocked));
-    assert!(StateMachineGatekeeper::can_transition(FeatureState::Blocked, FeatureState::Active));
-    assert!(!StateMachineGatekeeper::can_transition(FeatureState::NotStarted, FeatureState::Passing));
+    assert!(StateMachineGatekeeper::can_transition(
+        FeatureState::NotStarted,
+        FeatureState::Active
+    ));
+    assert!(StateMachineGatekeeper::can_transition(
+        FeatureState::Active,
+        FeatureState::Passing
+    ));
+    assert!(StateMachineGatekeeper::can_transition(
+        FeatureState::Active,
+        FeatureState::Blocked
+    ));
+    assert!(StateMachineGatekeeper::can_transition(
+        FeatureState::Blocked,
+        FeatureState::Active
+    ));
+    assert!(!StateMachineGatekeeper::can_transition(
+        FeatureState::NotStarted,
+        FeatureState::Passing
+    ));
 }
 
 #[test]

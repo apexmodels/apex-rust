@@ -2,7 +2,7 @@ use a2a::{AgentCapabilities, AgentCard, AgentInterface, AgentSkill};
 
 pub fn build_apex_agent_card(base_url: &str) -> AgentCard {
     let rpc_url = format!("{}/rpc", base_url.trim_end_matches('/'));
-    
+
     AgentCard {
         name: "ApexPhi-Think-14B".to_string(),
         description: "Frontier Mathematical Reasoning, Autonomous Web Research & Voice Synthesis Engine on Microsoft Phi-4 (14.7B)".to_string(),

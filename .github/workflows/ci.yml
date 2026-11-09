@@ -1,0 +1,39 @@
+name: CI & Harness Verification
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-and-verify:
+    name: Build, Test & Harness Gatekeeper
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy, rustfmt
+
+      - name: Cache Cargo Dependencies
+        uses: Swatinem/rust-cache@v2
+
+      - name: Check Formatting
+        run: cargo fmt --all -- --check
+
+      - name: Run Clippy Linter
+        run: cargo clippy --workspace --all-targets -- -D warnings
+
+      - name: Run Workspace Tests
+        run: cargo test --workspace --verbose
+
+      - name: Run Apex Harness Gatekeeper Certification
+        run: cargo run -p apex-harness --bin harness-verify -- --all

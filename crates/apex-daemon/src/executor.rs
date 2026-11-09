@@ -156,10 +156,7 @@ impl AgentExecutor for ApexAgentExecutor {
         Box::pin(s)
     }
 
-    fn cancel(
-        &self,
-        ctx: ExecutorContext,
-    ) -> BoxStream<'static, Result<StreamResponse, A2AError>> {
+    fn cancel(&self, ctx: ExecutorContext) -> BoxStream<'static, Result<StreamResponse, A2AError>> {
         let (task_id, context_id) = ctx.task_info();
         let s = async_stream::stream! {
             yield Ok(StreamResponse::StatusUpdate(TaskStatusUpdateEvent {
