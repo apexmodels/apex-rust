@@ -182,8 +182,7 @@ async fn voice_speak_handler(
     let speech_text = cleaned.clone();
 
     // Only invoke physical audio output when not in test or headless mode
-    let audio_disabled = std::env::var("APEX_DISABLE_AUDIO").is_ok()
-        || std::env::var("CI").is_ok();
+    let audio_disabled = std::env::var("APEX_DISABLE_AUDIO").is_ok() || std::env::var("CI").is_ok();
 
     if !audio_disabled {
         tokio::task::spawn_blocking(move || {
